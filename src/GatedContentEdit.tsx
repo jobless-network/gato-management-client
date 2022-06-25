@@ -1,21 +1,21 @@
-import { Autocomplete, Box, Button, Chip, FormControlLabel, Grid, ListItemIcon, ListItemText, MenuItem, Radio, RadioGroup, Select, SelectChangeEvent, Stack, TextField, Typography } from "@mui/material";
+import { Autocomplete, Box, Button, Chip, FormControlLabel, Radio, RadioGroup, Stack, TextField, Typography } from "@mui/material";
 import { DigitalAsset, Network, networks, tokens, nfts, TokenType } from "./consts";
 import { ReactComponent as IconX } from './assets/icon_X.svg'
-import { useState } from "react";
 
-enum Condition {
+export enum Condition {
     ALL,
     SOME
 }
 
-type Rule = {
+export type Rule = {
     type?: TokenType;
     digitalAsset?: DigitalAsset;
 }
 
-type GatedContent = {
+export type GatedContent = {
     name: string;
     description: string;
+    route: string;
     condition: Condition;
     rules: Rule[];
 }
@@ -60,7 +60,7 @@ function GateRule(props: { rule: Rule, idx: number, setRule: (idx: number, newRu
                             label="Network"
                             inputProps={{
                                 ...params.inputProps,
-                                autoComplete: 'new-password', // disable autocomplete and autofill
+                                autoComplete: 'off', // disable autocomplete and autofill
                             }}
                         />
                     )}
@@ -85,7 +85,7 @@ function GateRule(props: { rule: Rule, idx: number, setRule: (idx: number, newRu
                             label="Token"
                             inputProps={{
                                 ...params.inputProps,
-                                autoComplete: 'new-password', // disable autocomplete and autofill
+                                autoComplete: 'off', // disable autocomplete and autofill
                             }}
                         />
                     )}
@@ -110,7 +110,7 @@ function GateRule(props: { rule: Rule, idx: number, setRule: (idx: number, newRu
                             label="Collection"
                             inputProps={{
                                 ...params.inputProps,
-                                autoComplete: 'new-password', // disable autocomplete and autofill
+                                autoComplete: 'off', // disable autocomplete and autofill
                             }}
                         />
                     )}
@@ -120,40 +120,42 @@ function GateRule(props: { rule: Rule, idx: number, setRule: (idx: number, newRu
     </div >
 }
 
-export default function GatedContentEdit() {
-    const [gatedContent, setGatedContent] = useState({ name: "", description: "", condition: Condition.SOME, rules: [] as Rule[] });
-
+export default function GatedContentEdit(props: { gatedContent: GatedContent, setGatedContent: (newGatedContent: GatedContent) => void }) {
     const setCondition = (condition: Condition) => {
-        setGatedContent({ ...gatedContent, condition: condition });
+        props.setGatedContent({ ...props.gatedContent, condition: condition });
     }
 
     const addRule = () => {
-        var newGatedContent = { ...gatedContent };
+        var newGatedContent = { ...props.gatedContent };
         newGatedContent.rules.push({})
-        setGatedContent(newGatedContent)
+        props.setGatedContent(newGatedContent)
     }
 
     const deleteRule = (idx: number) => {
-        var newGatedContent = { ...gatedContent };
+        var newGatedContent = { ...props.gatedContent };
         newGatedContent.rules.splice(idx, 1);
-        setGatedContent(newGatedContent)
+        props.setGatedContent(newGatedContent)
     }
 
     const setRule = (idx: number, newRule: Rule) => {
-        var newGatedContent = { ...gatedContent };
+        var newGatedContent = { ...props.gatedContent };
         newGatedContent.rules[idx] = newRule;
-        setGatedContent(newGatedContent)
+        props.setGatedContent(newGatedContent)
     }
 
     return <Stack>
         <Stack spacing={2} sx={{ background: "#F5F7FA", paddingLeft: "32px", paddingBottom: "32px", paddingRight: "32px", paddingTop: "39px" }}>
-            <TextField id="outlined-basic" label="Content name" variant="outlined" inputProps={{
-                style: {
-                    fontWeight: 900,
-                    fontSize: 38,
-                }
-            }} />
-            <TextField id="outlined-basic" label="Content description" variant="outlined" />
+            <TextField onChange={(event) => props.setGatedContent({ ...props.gatedContent, name: event.target.value })}
+                required label="Content name" variant="outlined" inputProps={{
+                    autoComplete: 'off',
+                    style: {
+                        fontWeight: 900,
+                        fontSize: 38,
+                    }
+                }} />
+            <TextField inputProps={{ autoComplete: 'off' }} onChange={(event) => props.setGatedContent({ ...props.gatedContent, description: event.target.value })}
+                id="outlined-basic" label="Content description" variant="outlined" />
+            <TextField inputProps={{ autoComplete: 'off' }} onChange={(event) => props.setGatedContent({ ...props.gatedContent, route: event.target.value })} required id="outlined-basic" label="Route" variant="outlined" />
         </Stack>
         <Stack
             sx={{ paddingTop: "32px" }}
@@ -165,9 +167,9 @@ export default function GatedContentEdit() {
                 <Typography sx={{ fontSize: 16, fontWeight: 900 }} color="#1B2437" gutterBottom>
                     Allow access when:
                 </Typography>
-                {gatedContent.condition === Condition.SOME && <><Chip color="primary" label="One of the rules apply" onClick={() => setCondition(Condition.SOME)} />
+                {props.gatedContent.condition === Condition.SOME && <><Chip color="primary" label="One of the rules apply" onClick={() => setCondition(Condition.SOME)} />
                     <Chip color="primary" variant="outlined" label="ALL rules apply" onClick={() => setCondition(Condition.ALL)} /></>}
-                {gatedContent.condition === Condition.ALL && <><Chip color="primary" variant="outlined" label="One of the rules apply" onClick={() => setCondition(Condition.SOME)} />
+                {props.gatedContent.condition === Condition.ALL && <><Chip color="primary" variant="outlined" label="One of the rules apply" onClick={() => setCondition(Condition.SOME)} />
                     <Chip color="primary" label="ALL rules apply" onClick={() => setCondition(Condition.ALL)} /></>}
             </Stack>
             <Button variant="outlined" onClick={() => addRule()}>+ New Rule</Button>
@@ -175,7 +177,7 @@ export default function GatedContentEdit() {
         <Stack direction="row"
             justifyContent="space-between"
             alignItems="center" sx={{ paddingTop: "41px" }}>
-            {gatedContent.rules.map((rule, idx) => (<GateRule rule={rule} idx={idx} deleteCallback={deleteRule} setRule={setRule} />))}
+            {props.gatedContent.rules.map((rule, idx) => (<GateRule rule={rule} idx={idx} deleteCallback={deleteRule} setRule={setRule} />))}
         </Stack>
     </Stack >
 }
