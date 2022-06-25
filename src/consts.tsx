@@ -10,15 +10,21 @@ import { ReactComponent as CryptoPunkIcon } from './assets/pic_NFT-CryptoPunk.sv
 import { ReactComponent as DevForRevolutionIcon } from './assets/pic_NFT-DevForRevolution.svg'
 import { ReactComponent as NounsIcon } from './assets/pic_NFT-Nonus.svg'
 
-export type DigitalAsset = {
-    name: string
-    address: string
-    img: React.FunctionComponent<React.SVGProps<SVGSVGElement>>
+export enum TokenType {
+    NFT,
+    COIN
 }
 
 export type Network = {
     name: string
     img: React.FunctionComponent<React.SVGProps<SVGSVGElement>>
+}
+
+export type DigitalAsset = {
+    name: string
+    address: string
+    img: React.FunctionComponent<React.SVGProps<SVGSVGElement>>
+    type: TokenType;
 }
 
 export let networks: Network[] = [
@@ -28,14 +34,14 @@ export let networks: Network[] = [
 ]
 
 export let tokens: DigitalAsset[] = [
-    { name: "BANK", address: "0x2d94AA3e47d9D5024503Ca8491fcE9A2fB4DA198", img: BankTokenIcon },
-    { name: "APE", address: "0x4d224452801ACEd8B2F0aebE155379bb5D594381", img: ApeTokenIcon },
-    { name: "DAOMSTR", address: "0x7F6B4d98789d283622D6B85d0efa3a7928C59B89", img: DaoMasterTokenIcon },
-    { name: "MKR", address: "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2", img: MkrTokenIcon },
+    { name: "BANK", address: "0x2d94AA3e47d9D5024503Ca8491fcE9A2fB4DA198", img: BankTokenIcon, type: TokenType.COIN },
+    { name: "APE", address: "0x4d224452801ACEd8B2F0aebE155379bb5D594381", img: ApeTokenIcon, type: TokenType.COIN },
+    { name: "DAOMSTR", address: "0x7F6B4d98789d283622D6B85d0efa3a7928C59B89", img: DaoMasterTokenIcon, type: TokenType.COIN },
+    { name: "MKR", address: "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2", img: MkrTokenIcon, type: TokenType.COIN },
 ];
 export let nfts: DigitalAsset[] = [
-    { name: "Devs for Revolution", address: "0x25ed58c027921E14D86380eA2646E3a1B5C55A8b", img: DevForRevolutionIcon },
-    { name: "Bored Ape Yacht Club", address: "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D", img: BoredApeIcon },
-    { name: "Crypto Punks", address: "0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB", img: CryptoPunkIcon },
-    { name: "Nouns", address: "0x9C8fF314C9Bc7F6e59A9d9225Fb22946427eDC03", img: NounsIcon },
+    { name: "Devs for Revolution", address: "0x25ed58c027921E14D86380eA2646E3a1B5C55A8b", img: DevForRevolutionIcon, type: TokenType.NFT },
+    { name: "Bored Ape Yacht Club", address: "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D", img: BoredApeIcon, type: TokenType.NFT },
+    { name: "Crypto Punks", address: "0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB", img: CryptoPunkIcon, type: TokenType.NFT },
+    { name: "Nouns", address: "0x9C8fF314C9Bc7F6e59A9d9225Fb22946427eDC03", img: NounsIcon, type: TokenType.NFT },
 ];
