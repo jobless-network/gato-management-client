@@ -8,9 +8,7 @@ import { ReactComponent as MkrTokenIcon } from './assets/pic_token-MKR.svg'
 import { ReactComponent as BoredApeIcon } from './assets/pic_NFT-BoredApeYachtClub.svg'
 import { ReactComponent as CryptoPunkIcon } from './assets/pic_NFT-CryptoPunk.svg'
 import { ReactComponent as DevForRevolutionIcon } from './assets/pic_NFT-DevForRevolution.svg'
-import { ReactComponent as EnsIcon } from './assets/pic_NFT-ENS.svg'
-import { ReactComponent as LostPoetsIcon } from './assets/pic_NFT-LOSTPOETS.svg'
-import { ReactComponent as NounsIcon } from './assets/pic_NFT-Nouns.svg'
+import { ReactComponent as NounsIcon } from './assets/pic_NFT-Nonus.svg'
 
 export type DigitalAsset = {
     name: string
